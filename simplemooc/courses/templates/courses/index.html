@@ -32,6 +32,14 @@
             {{ course.description | linebreaks }}
         </div>
     </div>
+    {% empty %}
+    <div class="pure-g-r content-ribbon">
+        <div class="pure-u-1">
+            <div class="l-box">
+                <p>Nenhum curso disponível na plataforma</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
 </div>
 
