@@ -3,7 +3,7 @@
 {% block content %}
     <div class="pure-g-r content-ribbon">
         <div class="pure-u-1">
-            <h1>Informe seus dados de cadastro</h1>
+            <h1>Cadastre-se</h1>
             <form class="pure-form pure-form-aligned" method="post">
                 <fieldset>
                     {% csrf_token %}
@@ -17,13 +17,9 @@
                     </div>
                     {% endfor %}
                     <div class="pure-controls">
-                        <button type="submit" class="pure-button pure-button-primary">Enviar</button>
+                        <button type="submit" class="pure-button pure-button-primary">Cadastrar</button>
                     </div>
                 </fieldset>
-                <p>
-                    Não é cadastrado? <a href="{% url 'accounts:register' %}">Cadastre-se</a> <br />
-                    Esqueceu a senha? <a href="#">Nova senha</a> <br />
-                </p>
             </form>
         </div>
     </div>
