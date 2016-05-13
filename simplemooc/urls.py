@@ -7,6 +7,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^', include('simplemooc.core.urls', namespace='core')),
+    url(r'^conta/', include('simplemooc.accounts.urls', namespace='accounts')),
     url(r'^cursos/', include('simplemooc.courses.urls', namespace='courses')),
     url(r'^admin/', include(admin.site.urls)),
 )
