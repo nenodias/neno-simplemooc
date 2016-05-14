@@ -37,3 +37,9 @@ def edit(request):
         context['success'] = True
     context['form'] = form
     return render(request, template_name, context)
+
+@login_required
+def edit_password(request):
+    template_name = 'accounts/edit_password.html'
+    context = {}
+    return render(request, template_name, context)
