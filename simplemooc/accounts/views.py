@@ -27,5 +27,7 @@ def register(request):
     }
     return render(request, template_name, context)
 
-def logout(request):
-    pass
+@login_required
+def edit(request):
+    template_name = 'accounts/edit.html'
+    return render(request, template_name)
