@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib import messages
 from django.contrib.auth import authenticate, login, get_user_model
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth.decorators import login_required
@@ -39,7 +40,8 @@ def password_reset(request):
     if form.is_valid():
         form.set_request(request)
         form.save()
-        context['success'] = True
+        messages.success(request, 'Um e-mail foi enviado para você com mais detalhes')
+        return redirect('core:home')
     context['form'] = form
     return render(request, template_name, context)
 
@@ -50,7 +52,8 @@ def password_reset_confirm(request, key):
     form = SetPasswordForm(user=reset.user, data=request.POST or None)
     if form.is_valid():
         form.save()
-        context['success'] = True
+        messages.success(request, 'A sua senha foi criada com sucesso')
+        return redirect('core:home')
     context['form'] = form
     return render(request, template_name, context)
 
@@ -61,7 +64,8 @@ def edit(request):
     context = {}
     if form.is_valid():
         form.save()
-        context['success'] = True
+        messages.success(request, 'Os dados foram alterados com sucesso')
+        return redirect('accounts:dashboard')
     context['form'] = form
     return render(request, template_name, context)
 
@@ -72,6 +76,7 @@ def edit_password(request):
     context = {}
     if form.is_valid():
         form.save()
-        context['success'] = True
+        messages.success(request, 'A sua senha foi alterada com sucesso')
+        return redirect('accounts:dashboard')
     context['form'] = form
     return render(request, template_name, context)

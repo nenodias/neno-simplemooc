@@ -182,3 +182,9 @@ ul.breadcrumb li a {
     display: inline-block;
     padding: 0.3em 0.7em;
 }
+aside {
+    background: #1f8dd6 none repeat scroll 0 0;
+    border-radius: 3px;
+    color: #fff;
+    padding: 0.3em 1em;
+}
