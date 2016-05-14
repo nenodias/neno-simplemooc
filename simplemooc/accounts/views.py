@@ -20,6 +20,9 @@ def register(request):
             user = authenticate(
                 username=user.username, password=form.cleaned_data['password1'] 
             )
+            if user:
+                login(request, user)
+                return redirect(settings.LOGIN_REDIRECT_URL)
             return redirect(settings.LOGIN_URL)
     else:
         form = RegisterForm()

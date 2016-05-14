@@ -24,9 +24,7 @@
         <div class="pure-u-2-3">
             <div class="inner">
                 {% block dashboard_content %}
-                <p><strong>Login</strong>: {{ user }}</p>
-                <p><strong>Nome</strong>: {{ user.first_name }}</p>
-                <p><strong>Sobrenome</strong>: {{ user.last_name }}</p>
+                <p><strong>Nome</strong>: {{ user }}</p>
                 <p><strong>E-mail</strong>: {{ user.email }}</p>
                 {% endblock %}
             </div>
