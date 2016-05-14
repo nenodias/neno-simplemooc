@@ -1,7 +1,40 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
+from simplemooc.core.utils import generate_hash_key
+from simplemooc.core.mail import send_mail_template
+
 User = get_user_model()
+
+from .models import PasswordReset
+
+class PasswordResetForm(forms.Form):
+
+    email = forms.EmailField(label='E-mail')
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            return email
+        else:
+            raise forms.ValidationError('Nenhum usuário encontrado com este E-mail')
+
+    def save(self):
+        user = User.objects.get( email=self.cleaned_data['email'] )
+        key = generate_hash_key(user.username)
+        reset = PasswordReset(user=user, key=key)
+        reset.save()
+        template_name = 'accounts/password_reset_mail.html'
+        domain = self.request.build_absolute_uri('/')[:-1]
+        subject = 'Criar nova senha no SimpleMooc'
+        context = {
+            'reset': reset,
+            'domain': domain
+        }
+        send_mail_template(subject, template_name, context, [ user.email ])
+
+    def set_request(self, req):
+        self.request = req
 
 class RegisterForm(forms.ModelForm):
 
