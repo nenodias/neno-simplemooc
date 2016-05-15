@@ -1,6 +1,12 @@
-<li class="pure-menu-heading">Meus Cursos</li>
+<li class="pure-menu-heading">{{ user }}</li>
+<li class="pure-menu-heading">Cursos</li>
 {% for enrollment in enrollments %}
-<li><a href="#">{{ enrollment.course }}</a></li>
+<li>
+    <a href="#">
+        <i class="fa fa-book" aria-hidden="true"></i>
+        {{ enrollment.course }}
+    </a>
+</li>
 {% empty %}
-<li>Nenhum curso encontrado</li>
+<li>Você não está inscrito em nenhum curso</li>
 {% endfor %}
