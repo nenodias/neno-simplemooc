@@ -1,0 +1,21 @@
+{% extends "courses/courses_dashboard.html" %}
+
+{% block dashboard_content %}
+<form class="pure-form pure-form-stacked" method="post">
+    {% csrf_token %}
+    <fieldset>
+        <h3>Você deseja realmente cancelar a inscrição deste curso?</h3>
+        <div class="pure-controls">
+            <button
+            type="submit"
+            class="pure-button pure-button-primary"
+            >
+                Confirmar
+            </button>
+            <a href="{% url 'courses:announcements' course.slug %}" class="pure-button button-secondary">
+                Cancelar
+            </a>
+        </div>
+    </fieldset>
+</form>
+{% endblock %}
