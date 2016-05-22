@@ -9,7 +9,7 @@
 {% block menu_options %}
 <li class="pure-menu-heading">{{ course }}</li>
 <li>
-    <a href="#">
+    <a href="{% url 'courses:lessons' course.slug %}">
         <i class="fa fa-video-camera" aria-hidden="true"></i>
         Aulas e Materiais
     </a>
@@ -21,7 +21,7 @@
     </a>
 </li>
 <li>
-    <a href="#">
+    <a href="{% url 'courses:announcements' course.slug %}">
         <i class="fa fa-envelope" aria-hidden="true"></i>
         Anúncios
     </a>
