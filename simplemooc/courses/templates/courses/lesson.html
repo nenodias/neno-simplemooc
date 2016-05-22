@@ -4,6 +4,12 @@
 {{ block.super }}
 <li>/</li>
 <li>
+    <a href="{% url 'courses:lessons' course.slug %}">
+        Aulas
+    </a>
+</li>
+<li>/</li>
+<li>
     <a href="{% url 'courses:lesson' course.slug lesson.pk %}">
         {{ lesson }}
     </a>
@@ -27,10 +33,30 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td></td>
-                    <td></td>
+                {% for material in lesson.materials.all %}
+                <tr class="{% cycle '' 'pure-class-odd' %}">
+                    <td>{{ material }}</td>
+                    {% if material.is_embedded %}
+                    <td>
+                        <a href="{% url 'courses:material' course.slug material.pk %}">
+                            <i class="fa fa-video-camera"></i>
+                            Acessar
+                        </a>
+                    </td>
+                    {% else %}
+                    <td>
+                        <a href="{{ material.file.url }}">
+                            <i class="fa fa-cloud-download"></i>
+                            Baixar
+                        </a>
+                    </td>
+                    {% endif %}
                 </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="2">Nenhum Material</td>
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </p>
