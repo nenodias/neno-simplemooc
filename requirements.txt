@@ -4,3 +4,4 @@ psycopg2==2.6.1
 whitenoise==2.0.0
 Django==1.6.2
 Pillow==3.2.0
+model_mommy==1.2.6
