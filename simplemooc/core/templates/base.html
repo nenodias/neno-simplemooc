@@ -17,6 +17,7 @@
         <ul>
             <li><a href="{% url 'core:home' %}">Início</a></li>
             <li><a href="{% url 'courses:index' %}">Cursos</a></li>
+            <li><a href="{% url 'forum:index' %}">Fórum</a></li>
             {% if user.is_authenticated %}
             <li><a href="{% url 'accounts:dashboard' %}">Painel</a></li>
             <li><a href="{% url 'accounts:logout' %}" title="{{user.username}}">Sair</a></li>
