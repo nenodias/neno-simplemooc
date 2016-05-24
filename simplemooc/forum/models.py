@@ -3,7 +3,7 @@ from taggit.managers import TaggableManager
 from django.conf import settings
 
 class Thread(models.Model):
-    
+    slug = models.SlugField('Identificador', max_length=100,unique=True)
     title = models.CharField('Título', max_length=100)
     body = models.TextField('Mensagem')
     views = models.IntegerField('Visualizações', blank=True, default=0)
