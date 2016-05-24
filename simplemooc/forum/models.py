@@ -3,8 +3,9 @@ from taggit.managers import TaggableManager
 from django.conf import settings
 
 class Thread(models.Model):
-    slug = models.SlugField('Identificador', max_length=100,unique=True)
+    
     title = models.CharField('Título', max_length=100)
+    slug = models.SlugField('Identificador', max_length=100,unique=True)
     body = models.TextField('Mensagem')
     views = models.IntegerField('Visualizações', blank=True, default=0)
     author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Autor',
@@ -18,6 +19,10 @@ class Thread(models.Model):
 
     def __str__(self):
         return self.title
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('forum:thread',(), { 'slug' : self.slug } )
 
     class Meta:
         verbose_name = 'Tópico'
