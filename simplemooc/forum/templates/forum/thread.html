@@ -7,6 +7,8 @@
             <li><a href="{% url 'core:home' %}">Início</a></li>
             <li>/</li>
             <li><a href="{% url 'forum:index' %}">Fórum de Discussões</a></li>
+            <li>/</li>
+            <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
         </ul>
     </div>
     <div class="pure-u-1-3">
@@ -47,58 +49,50 @@
     </div>
     <div class="pure-u-2-3">
         <div class="inner">
-            {% for thread in object_list %}
             <div class="well">
-                <h3>
-                    <a 
-                        href="{{ thread.get_absolute_url }}"
-                        title="{{ thread.title }}"
-                    >
-                        {{ thread.title }}
-                    </a>
-                </h3>
+                <h2>{{ object }}</h2>
+                {{ object.body|linebreaks }}
                 <h5>
-                    Criado por {{ thread.author }} | {{ thread.answers }} resposta{{ thread.answers|pluralize }} | {{ thread.views }} Visualizaç{{ thread.views|pluralize:"ão,ões" }} 
+                    Criado por {{ object.author }}
                 </h5>
                 <p>
                     <i class="fa fa-tags"></i>
                     Tags: 
-                    {% for tag in thread.tags.all %}
+                    {% for tag in object.tags.all %}
                     <a href="{% url 'forum:index_tagged' tag.slug %}" title="{{ tag }}">{{ tag }}</a>{% if not forloop.last %},{% endif %}
                     {% endfor %}
-                    <a class="fright" href="" title="">Atualizado a {{ thread.update_at|timesince }} atrás</a>
+                    <a class="fright" href="" title="">Criado a {{ object.create_at|timesince }} atrás</a>
                 </p>
             </div>
-            {% endfor %}
-            <ul class="pagination pagination-centered">
-                
-                <li>
-                    <a 
-                    {% if page_obj.has_previous %}
-                    href="?page={{ page_obj.previous_page_number }}{% if order %}&order={{ order }}{% endif %}"
-                    {% else %}
-                    class="a-disabled"
-                    href="#"
-                    {% endif %}
-                    title="Anterior">Anterior</a>
-                </li>
-                
-                {% for page in paginator.page_range %}
-                <li{% if page == page_obj.number %} class="active"{% endif %}>
-                    <a href="?page={{ page }}{% if order %}&order={{ order }}{% endif %}" title="">{{ page }}</a>
-                </li>
+            <div class="well">
+                <h4 id="answers">
+                    Respostas
+                    <a class="fright" href="#add_comment">Responder</a>
+                </h4>
+                <hr />
+                {% for reply in object.replies.all %}
+                {% filter linebreaks %}
+                    <strong>{{ reply.author }}</strong> disse a {{ reply.creat_at|timesince }}
+                    {{ reply.reply }}
+                {% endfilter %}
+                <hr />
                 {% endfor %}
-                <li>
-                    <a 
-                    {% if page_obj.has_next %}
-                    href="?page={{ page_obj.next_page_number }}{% if order %}&order={{ order }}{% endif %}"
-                    {% else %}
-                    class="a-disabled"
-                    href="#"
-                    {% endif %}
-                    title="Próxima">Próxima</a>
-                </li>
-            </ul>
+                <form method="post" class="pure-form pure-form-stacked" id="add_comment">
+                    <fieldset>
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="pure-control-group">
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {{ field.errors }}
+                        </div>
+                        {% endfor %}
+                        <div class="pure-controls">
+                            <button type="submit" class="pure-button pure-button-primary">Enviar</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
         </div>
     </div>
 </div>
