@@ -68,7 +68,7 @@ class Enrollment(models.Model):
     update_at = models.DateTimeField('Atualizado em', auto_now=True)
 
     def is_approved(self):
-        return status == 1
+        return self.status == 1
 
     class Meta:
         verbose_name = 'Inscrição'

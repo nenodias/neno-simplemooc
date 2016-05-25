@@ -64,17 +64,37 @@
                     <a class="fright" href="" title="">Criado a {{ object.create_at|timesince }} atrás</a>
                 </p>
             </div>
-            <div class="well">
+            <div class="well" id="div-comments">
                 <h4 id="answers">
                     Respostas
                     <a class="fright" href="#add_comment">Responder</a>
                 </h4>
                 <hr />
                 {% for reply in object.replies.all %}
-                {% filter linebreaks %}
+                <p>
                     <strong>{{ reply.author }}</strong> disse a {{ reply.creat_at|timesince }}
-                    {{ reply.reply }}
-                {% endfilter %}
+                    {{ reply.reply|linebreaksbr }}
+                    <br />
+                    <br />
+                    {% if object.author == user %}
+                        
+                        <a href="{% url 'forum:reply_incorrect' reply.pk %}" title="" class="pure-button button-error reply-cancel-correct-lnk {% if not reply.correct %} hidden {% endif %}">
+                            Cancelar Resposta Correta
+                        </a>
+                        <a href="{% url 'forum:reply_correct' reply.pk %}" title="" class="pure-button button-success reply-correct-lnk {% if reply.correct %} hidden {% endif %}">
+                            Resposta Correta
+                        </a>
+                        <span class="fright label-success reply-correct-msg {% if not reply.correct %} hidden {% endif %}">
+                            resposta indicada pelo autor
+                        </span>
+                        <br class="reply-correct-lnk {% if not reply.correct %} hidden {% endif %}" />
+                    {% elif reply.correct %}
+                        <span class="fright label-success reply-correct-msg {% if not reply.correct %} hidden {% endif %}">
+                            resposta indicada pelo autor
+                        </span>
+                        <br class="reply-correct-lnk {% if not reply.correct %} hidden {% endif %}" />
+                    {% endif %}
+                </p>
                 <hr />
                 {% endfor %}
                 <form method="post" class="pure-form pure-form-stacked" id="add_comment">
@@ -96,4 +116,40 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+    $(".reply-cancel-correct-lnk").on("click", function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var $p = $this.closest("p");
+        $.get($this.attr('href'), function(data){
+            if (data.success){
+                $p.find(".reply-correct-msg").addClass('hidden');
+                $this.addClass("hidden");
+                $p.find(".reply-correct-lnk").removeClass('hidden');
+            }else{
+                alert(data.message);
+            }
+        }, "json");
+    });
+    $(".reply-correct-lnk").on("click", function(e){
+        e.preventDefault();
+        var $this = $(this);
+        var $p = $this.closest("p");
+        $.get($this.attr('href'), function(data){
+            if (data.success){
+                $("#div-comments .reply-correct-msg").addClass('hidden');
+                $("#div-comments .reply-cancel-correct-lnk").addClass('hidden');
+                $("#div-comments .reply-correct-lnk").removeClass('hidden');
+                $p.find(".reply-correct-msg").removeClass('hidden');
+                $this.addClass("hidden");
+                $p.find(".reply-cancel-correct-lnk").removeClass('hidden');
+            }else{
+                alert(data.message);
+            }
+        }, "json");
+    });
+</script>
 {% endblock %}

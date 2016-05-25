@@ -32,7 +32,7 @@ def details(request, slug):
 
 @login_required
 def enrollment(request, slug):
-    course = request.course
+    course = get_object_or_404(Course,slug=slug)
     enrollment, created = Enrollment.objects.get_or_create(
         user=request.user, course=course
     )
@@ -44,7 +44,7 @@ def enrollment(request, slug):
 
 @login_required
 def undo_enrollment(request, slug):
-    course = request.course
+    course = get_object_or_404(Course,slug=slug)
     enrollment = get_object_or_404(Enrollment, user=request.user, course=course)
     template_name = 'courses/undo_enrollment.html'
     if request.POST:
